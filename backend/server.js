@@ -32,16 +32,19 @@ connectDB()
 
 const __dirname = path.resolve()
 
-// Set up routes
+// Initialize the Routes
 if (process.env.NODE_ENV === 'production') {
-  app.get('*', (req, res) => {
-    app.use(express.static(path.join(__dirname, '/frontend/build'))) // set frontend folder as a static folder
+  // Set the 'build' folder as a static folder
+  // Why ? So we can access the build folder and load the index.html
+  app.use(express.static(path.join(__dirname, '/frontend/build'))) // set frontend folder as a static folder
 
-    res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'))
+  // Send the index.html file if on Production
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
   })
 } else {
   app.get('/', (req, res) => {
-    res.send('Route is connected')
+    res.send('API is running ....')
   })
 }
 
